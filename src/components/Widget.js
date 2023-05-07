@@ -107,9 +107,9 @@ const Widget = () => {
                                     <a href="/admin/salelist" style={{ color: "white", fontWeight: "bold", textDecoration: "underline" }}>new order</a>.{' '}
                                     Take a look!
                                 </Toast.Body>
-                            ) : (
+                            ) : ( //orders?.filter(order => order.isDone === false).length
                                 <Toast.Body>
-                                    You have {orders?.filter(order => order.isDone === false).length} uncompleted orders. Click{' '}
+                                    You have {orders?.length} uncompleted orders. Click{' '}
                                     <a href="/admin/salelist" style={{ color: "white", fontWeight: "bold", textDecoration: "underline" }}>here</a>{' '}
                                     to see them all.
                                 </Toast.Body>

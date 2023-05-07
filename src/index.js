@@ -6,6 +6,28 @@ import './bootstrap.min.css'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import axios from 'axios';
+
+axios.defaults.baseURL = 'http://localhost:5000';
+
+axios.interceptors.request.use(request => {
+  console.log(request);
+  // Edit request config
+  return request;
+}, error => {
+  console.log(error);
+  return Promise.reject(error);
+});
+
+axios.interceptors.response.use(response => {
+  console.log(response);
+  // Edit response config
+  return response;
+}, error => {
+  console.log(error);
+  return Promise.reject(error);
+});
+
 
 ReactDOM.render(
   <Provider store={store}>

@@ -110,7 +110,7 @@ const HomeScreen = ({ match }) => {
             </p>
           </Alert>
         )) : null}
-      {banners.map((banner) => (
+      {banners?.map((banner) => (
         banner.isText ? (
           showText && (
             <Alert variant="info" onClose={() => setShowText(false)} dismissible style={{ margin: '20px' }}>
@@ -144,7 +144,7 @@ const HomeScreen = ({ match }) => {
         <>
           {/* <Meta /> */}
           <Row>
-            {products.map((product) => (
+            {products?.map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />
               </Col>
