@@ -12,6 +12,8 @@ const CartScreen = ({ match, location, history }) => {
 
   const dispatch = useDispatch()
 
+  const base_url = "http://localhost:5000"
+
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
 
@@ -43,7 +45,11 @@ const CartScreen = ({ match, location, history }) => {
               <ListGroup.Item key={item.product}>
                 <Row className="d-flex align-items-center justify-content-center">
                   <Col md={2}>
-                    <Image src={item.image} alt={item.name} fluid rounded />
+                    {item.image.includes('http') ? (
+                      <Image src={item.image} alt={item.name} fluid rounded />
+                    ) : (
+                      <Image src={`${base_url}${item.image}`} alt={item.name} fluid rounded />
+                    )}
                   </Col>
                   <Col md={3}>
                     <Link to={`/product/${item.product}`}>{item.name}</Link>

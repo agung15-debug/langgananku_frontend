@@ -23,6 +23,8 @@ const OrderScreen = ({ match, history }) => {
 
   const dispatch = useDispatch()
 
+  const base_url = "http://localhost:5000"
+
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
 
@@ -177,12 +179,21 @@ const OrderScreen = ({ match, history }) => {
                     <ListGroup.Item key={index}>
                       <Row className="d-flex align-items-center justify-content-center">
                         <Col md={1}>
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
+                          {item.image.includes('http') ? (
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fluid
+                              rounded
+                            />
+                          ) : (
+                            <Image
+                              src={`${base_url}${item.image}`}
+                              alt={item.name}
+                              fluid
+                              rounded
+                            />
+                          )}
                         </Col>
                         <Col md={4}>
                           <Link to={`/product/${item.product}`}>
@@ -256,18 +267,33 @@ const OrderScreen = ({ match, history }) => {
                   {userInfo.isAdmin && order.paymentResult && order.paymentResult.status === 'pending' ? (
                     <>
                       <Card.Link onClick={handleShowModal}>
-                        <Card.Img src={order.paymentResult.proof} variant='top' style={{ objectFit: 'contain', width: '100%', height: '300px' }} />
+                        {order.paymentResult.proof.includes('http') ? (
+                          <Card.Img src={order.paymentResult.proof} variant='top' style={{ objectFit: 'contain', width: '100%', height: '300px' }} />
+                        ) : (
+                          <Card.Img src={`${base_url}${order.paymentResult.proof}`} variant='top' style={{ objectFit: 'contain', width: '100%', height: '300px' }} />
+                        )}
                       </Card.Link>
                       <Modal show={showModal} onHide={handleCloseModal} size="xl">
                         <Modal.Body style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                          <img
-                            src={order.paymentResult.proof}
-                            alt='Full Image'
-                            style={{
-                              maxWidth: '100%',
-                              maxHeight: '100%'
-                            }}
-                          />
+                          {order.paymentResult.proof.includes('http') ? (
+                            <img
+                              src={order.paymentResult.proof}
+                              alt='Full Image'
+                              style={{
+                                maxWidth: '100%',
+                                maxHeight: '100%'
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src={`${base_url}${order.paymentResult.proof}`}
+                              alt='Full Image'
+                              style={{
+                                maxWidth: '100%',
+                                maxHeight: '100%'
+                              }}
+                            />
+                          )}
                         </Modal.Body>
                       </Modal>
                       <button type='button' className='btn btn-primary' onClick={confirmPayHandler}>Confirm Payment</button>

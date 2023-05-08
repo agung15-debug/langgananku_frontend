@@ -9,11 +9,17 @@ const Product = ({ product }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  const base_url = "http://localhost:5000"
+
   return (
     <Card className='my-3 p-3 rounded'>
       <Link to={`/product/${product._id}`}>
         <div style={{ position: 'relative' }}>
-          <Card.Img src={product.image} variant='top' />
+          {product.image.includes('http') ? (
+            <Card.Img src={product.image} variant='top' />
+          ) : (
+            <Card.Img src={`${base_url}${product.image}`} variant='top' />
+          )}
           {userInfo?.isAdmin && (
             <Link to={`/admin/product/${product._id}/edit`}>
               <button

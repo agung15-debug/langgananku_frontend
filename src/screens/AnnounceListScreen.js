@@ -19,6 +19,8 @@ const AnnounceListScreen = ({ history, match }) => {
 
   const dispatch = useDispatch()
 
+  const base_url = "http://localhost:5000"
+
   const [show, setShow] = useState(false);
 
   const announceList = useSelector((state) => state.announceList)
@@ -161,51 +163,59 @@ const AnnounceListScreen = ({ history, match }) => {
       ) : (
         announces.length != 0 ? (
           <>
-          <Table striped bordered hover responsive className='table-sm'>
-            <thead>
-              <tr>
-                <th>NAME</th>
-                <th>IMAGES</th>
-                <th>DESCRIPTION</th>
-                <th>ACTION</th>
-              </tr>
-            </thead>
-            <tbody>
-              {announces.map((announce) => (
-                !announce.isText ? (
-                  <tr key={announce._id}>
-                    <td style={{ verticalAlign: 'middle' }}>{announce.name}</td>
-                    <td style={{ verticalAlign: 'middle', textAlign: 'left' }}>
-                      <div style={{ position: 'relative', width: '100%', height: '50px', overflow: 'hidden' }}>
-                        <Image
-                          src={announce.image}
-                          alt={announce.name}
-                          style={{ maxHeight: '100%', maxWidth: '100%', cursor: 'pointer' }}
-                        />
-                      </div>
-                    </td>
-                    <td style={{ verticalAlign: 'middle' }}>{announce.description}</td>
-                    <td style={{ verticalAlign: 'middle' }}>
-                      <LinkContainer to={`/admin/announce/${announce._id}/edit`}>
-                        <Button variant='light' className='btn-sm'>
-                          <i className='fas fa-edit'></i>
+            <Table striped bordered hover responsive className='table-sm'>
+              <thead>
+                <tr>
+                  <th>NAME</th>
+                  <th>IMAGES</th>
+                  <th>DESCRIPTION</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                {announces.map((announce) => (
+                  !announce.isText ? (
+                    <tr key={announce._id}>
+                      <td style={{ verticalAlign: 'middle' }}>{announce.name}</td>
+                      <td style={{ verticalAlign: 'middle', textAlign: 'left' }}>
+                        <div style={{ position: 'relative', width: '100%', height: '50px', overflow: 'hidden' }}>
+                          {announce.image.includes('http') ? (
+                            <Image
+                              src={announce.image}
+                              alt={announce.name}
+                              style={{ maxHeight: '100%', maxWidth: '100%', cursor: 'pointer' }}
+                            />
+                          ) : (
+                            <Image
+                              src={`${base_url}${announce.image}`}
+                              alt={announce.name}
+                              style={{ maxHeight: '100%', maxWidth: '100%', cursor: 'pointer' }}
+                            />
+                          )}
+                        </div>
+                      </td>
+                      <td style={{ verticalAlign: 'middle' }}>{announce.description}</td>
+                      <td style={{ verticalAlign: 'middle' }}>
+                        <LinkContainer to={`/admin/announce/${announce._id}/edit`}>
+                          <Button variant='light' className='btn-sm'>
+                            <i className='fas fa-edit'></i>
+                          </Button>
+                        </LinkContainer>
+                        <Button
+                          variant='danger'
+                          className='btn-sm'
+                          onClick={() => deleteHandler(announce._id)}
+                        >
+                          <i className='fas fa-trash'></i>
                         </Button>
-                      </LinkContainer>
-                      <Button
-                        variant='danger'
-                        className='btn-sm'
-                        onClick={() => deleteHandler(announce._id)}
-                      >
-                        <i className='fas fa-trash'></i>
-                      </Button>
-                    </td>
-                  </tr>
-                ) : null
-              ))}
-            </tbody>
-          </Table>
-          <Paginate pages={pages} page={page} name={"announce"} isAdmin={true} />
-        </>
+                      </td>
+                    </tr>
+                  ) : null
+                ))}
+              </tbody>
+            </Table>
+            <Paginate pages={pages} page={page} name={"announce"} isAdmin={true} />
+          </>
         ) : (
           <Message variant='info'>Currently, there is no Announce data available. You can add Announce data to see it appear here.</Message>
         )

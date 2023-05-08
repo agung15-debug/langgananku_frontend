@@ -9,6 +9,8 @@ import { listBanners } from '../actions/announceActions'
 const ProductCarousel = () => {
   const dispatch = useDispatch()
 
+  const base_url = "http://localhost:5000"
+
   const bannerList = useSelector((state) => state.bannerList)
   const { loading, error, banners } = bannerList
 
@@ -24,7 +26,11 @@ const ProductCarousel = () => {
     <Carousel pause='hover' className={'bg-white-transp-motif'}>
       {banners.map((banner) => (
         <Carousel.Item key={banner._id}>
-          <Image src={banner.image} alt={banner.name} className='full-screen-image' />
+          {banner.image.includes('http') ? (
+            <Image src={banner.image} alt={banner.name} className='full-screen-image' />
+          ) : (
+            <Image src={`${base_url}${banner.image}`} alt={banner.name} className='full-screen-image' />
+          )}
         </Carousel.Item>
       ))}
     </Carousel>

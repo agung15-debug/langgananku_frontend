@@ -13,6 +13,8 @@ const PlaceOrderScreen = ({ history }) => {
 
   const cart = useSelector((state) => state.cart)
 
+  const base_url = "http://localhost:5000"
+
   if (!cart.pickupNote.date) {
     history.push('/shipping')
   } else if (!cart.paymentMethod) {
@@ -42,7 +44,7 @@ const PlaceOrderScreen = ({ history }) => {
   const totalProfit = Math.floor(
     cart.cartItems.reduce(
       (acc, item) =>
-        acc + (item.qty > item.discountThreshold ? item.qty * ( item.groceryPrice - item.basePrice ) : item.qty * ( item.sellingPrice - item.basePrice )),
+        acc + (item.qty > item.discountThreshold ? item.qty * (item.groceryPrice - item.basePrice) : item.qty * (item.sellingPrice - item.basePrice)),
       0
     )
   )
@@ -114,12 +116,21 @@ const PlaceOrderScreen = ({ history }) => {
                     <ListGroup.Item key={index}>
                       <Row className="d-flex align-items-center justify-content-center">
                         <Col md={1}>
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
+                          {item.image.includes('http') ? (
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fluid
+                              rounded
+                            />
+                          ) : (
+                            <Image
+                              src={`${base_url}${item.image}`}
+                              alt={item.name}
+                              fluid
+                              rounded
+                            />
+                          )}
                         </Col>
                         <Col md={4}>
                           <Link to={`/product/${item.product}`}>

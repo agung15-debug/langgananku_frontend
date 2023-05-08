@@ -17,6 +17,8 @@ const PayScreen = ({ match, history }) => {
 
   const dispatch = useDispatch()
 
+  const base_url = "http://localhost:5000"
+
   const [image, setImage] = useState('')
   const [status, setStatus] = useState('unpaid')
   const [uploading, setUploading] = useState(false)
@@ -111,11 +113,18 @@ const PayScreen = ({ match, history }) => {
                     if (bankAccount.isQris) {
                       return (
                         <div style={{ position: 'relative', width: '400px', height: '100%', overflow: 'hidden' }}>
+                          {bankAccount.image.includes('http') ? (
                             <Image
                               src={bankAccount.image}
                               style={{ maxHeight: '100%', maxWidth: '100%', cursor: 'pointer' }}
                             />
-                          </div>
+                          ) : (
+                            <Image
+                              src={`${base_url}${bankAccount.image}`}
+                              style={{ maxHeight: '100%', maxWidth: '100%', cursor: 'pointer' }}
+                            />
+                          )}
+                        </div>
                       );
                     }
                     return null;

@@ -17,6 +17,8 @@ const BankAccountListScreen = ({ history, match }) => {
 
   const dispatch = useDispatch()
 
+  const base_url = "http://localhost:5000"
+
   const [qris, setQris] = useState(false)
   const [cekQris, setCekQris] = useState(false)
 
@@ -181,10 +183,17 @@ const BankAccountListScreen = ({ history, match }) => {
                       <tr key={bankAccount._id}>
                         <td style={{ verticalAlign: 'middle', textAlign: 'left' }}>
                           <div style={{ position: 'relative', width: '400px', height: '100%', overflow: 'hidden' }}>
-                            <Image
-                              src={bankAccount.image}
-                              style={{ maxHeight: '100%', maxWidth: '100%', cursor: 'pointer' }}
-                            />
+                            {bankAccount.image.includes('http') ? (
+                              <Image
+                                src={bankAccount.image}
+                                style={{ maxHeight: '100%', maxWidth: '100%', cursor: 'pointer' }}
+                              />
+                            ) : (
+                              <Image
+                                src={`${base_url}${bankAccount.image}`}
+                                style={{ maxHeight: '100%', maxWidth: '100%', cursor: 'pointer' }}
+                              />
+                            )}
                           </div>
                         </td>
                         <td>

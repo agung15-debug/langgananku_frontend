@@ -19,6 +19,8 @@ const ProductScreen = ({ history, match }) => {
 
   const dispatch = useDispatch()
 
+  const base_url = "http://localhost:5000"
+
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
@@ -71,7 +73,11 @@ const ProductScreen = ({ history, match }) => {
           <Meta title={product.name} />
           <Row>
             <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
+              {product.image?.includes('http') ? (
+                <Image src={product.image} alt={product.name} fluid />
+              ) : (
+                <Image src={`${base_url}${product.image}`} fluid />
+              )}
             </Col>
             <Col md={3}>
               <ListGroup variant='flush'>
